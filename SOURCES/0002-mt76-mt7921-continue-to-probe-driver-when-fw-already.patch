@@ -1,0 +1,56 @@
+From d866e32d4b1449883bdf16d27a88173e7e3eff08 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?=C3=8D=C3=B1igo=20Huguet?= <ihuguet@redhat.com>
+Date: Tue, 21 Dec 2021 14:23:33 +0100
+Subject: [PATCH] mt76: mt7921: continue to probe driver when fw already
+ downloaded
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Bugzilla: http://bugzilla.redhat.com/2041422
+
+commit c34269041185dad1bab7a34f42ef9fab967a1684
+Author: Aaron Ma <aaron.ma@canonical.com>
+Date:   Thu Jul 8 21:17:10 2021 +0800
+
+    mt76: mt7921: continue to probe driver when fw already downloaded
+
+    When reboot system, no power cycles, firmware is already downloaded,
+    return -EIO will break driver as error:
+    mt7921e: probe of 0000:03:00.0 failed with error -5
+
+    Skip firmware download and continue to probe.
+
+    Signed-off-by: Aaron Ma <aaron.ma@canonical.com>
+    Fixes: 1c099ab44727c ("mt76: mt7921: add MCU support")
+    Signed-off-by: David S. Miller <davem@davemloft.net>
+
+Signed-off-by: Íñigo Huguet <ihuguet@redhat.com>
+---
+ drivers/net/wireless/mediatek/mt76/mt7921/mcu.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
+index 5f3d56d570a5..3fdb4c0895c9 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
+@@ -907,7 +907,7 @@ static int mt7921_load_firmware(struct mt7921_dev *dev)
+ 	ret = mt76_get_field(dev, MT_CONN_ON_MISC, MT_TOP_MISC2_FW_N9_RDY);
+ 	if (ret) {
+ 		dev_dbg(dev->mt76.dev, "Firmware is already download\n");
+-		return -EIO;
++		goto fw_loaded;
+ 	}
+ 
+ 	ret = mt7921_load_patch(dev);
+@@ -925,6 +925,7 @@ static int mt7921_load_firmware(struct mt7921_dev *dev)
+ 		return -EIO;
+ 	}
+ 
++fw_loaded:
+ 	mt76_queue_tx_cleanup(dev, dev->mt76.q_mcu[MT_MCUQ_FWDL], false);
+ 
+ #ifdef CONFIG_PM
+-- 
+2.13.6
+

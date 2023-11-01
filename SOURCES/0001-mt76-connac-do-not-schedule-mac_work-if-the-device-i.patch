@@ -1,0 +1,50 @@
+From 964125ac411b6b5cf34322887ee16d3e500c8d52 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?=C3=8D=C3=B1igo=20Huguet?= <ihuguet@redhat.com>
+Date: Tue, 21 Dec 2021 14:23:22 +0100
+Subject: [PATCH] mt76: connac: do not schedule mac_work if the device is not
+ running
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Bugzilla: http://bugzilla.redhat.com/2041422
+
+commit 6061fcf4820a2036189d0a6215f75a913f0fb5a1
+Author: Lorenzo Bianconi <lorenzo@kernel.org>
+Date:   Fri Apr 23 16:27:11 2021 +0200
+
+    mt76: connac: do not schedule mac_work if the device is not running
+
+    Do not run ieee80211_queue_delayed_work for mac work if the worqueue is
+    not initialized yet
+
+    Fixes: b1bd7bb8121d ("mt76: connac: unschedule mac_work before going to sleep")
+    Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+    Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+    Link: https://lore.kernel.org/r/5bfd36a75799c37b12fcb54d17e77fbc2c7a0558.1619187875.git.lorenzo@kernel.org
+
+Signed-off-by: Íñigo Huguet <ihuguet@redhat.com>
+---
+ drivers/net/wireless/mediatek/mt76/mt7615/mac.c | 5 +++--
+ drivers/net/wireless/mediatek/mt76/mt7921/mac.c | 5 +++--
+ 2 files changed, 6 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
+index 214bd1859792..decf2d5f0ce3 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
+@@ -1404,8 +1404,9 @@ void mt7921_pm_wake_work(struct work_struct *work)
+ 			napi_schedule(&dev->mt76.napi[i]);
+ 		mt76_connac_pm_dequeue_skbs(mphy, &dev->pm);
+ 		mt7921_tx_cleanup(dev);
+-		ieee80211_queue_delayed_work(mphy->hw, &mphy->mac_work,
+-					     MT7921_WATCHDOG_TIME);
++		if (test_bit(MT76_STATE_RUNNING, &mphy->state))
++			ieee80211_queue_delayed_work(mphy->hw, &mphy->mac_work,
++						     MT7921_WATCHDOG_TIME);
+ 	}
+ 
+ 	ieee80211_wake_queues(mphy->hw);
+-- 
+2.13.6
+
