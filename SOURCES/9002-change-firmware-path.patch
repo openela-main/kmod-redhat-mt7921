@@ -1,0 +1,15 @@
+Index: src/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
+===================================================================
+--- src.orig/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h	2022-01-26 22:13:12.922460591 +0100
++++ src/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h	2022-01-26 22:28:36.722090977 +0100
+@@ -30,8 +30,8 @@
+ 
+ #define MT7921_DRV_OWN_RETRY_COUNT	10
+ 
+-#define MT7921_FIRMWARE_WM		"mediatek/WIFI_RAM_CODE_MT7961_1.bin"
+-#define MT7921_ROM_PATCH		"mediatek/WIFI_MT7961_patch_mcu_1_2_hdr.bin"
++#define MT7921_FIRMWARE_WM		"mediatek/WIFI_RAM_CODE_MT7961_1_dup8.5.bin"
++#define MT7921_ROM_PATCH		"mediatek/WIFI_MT7961_patch_mcu_1_2_hdr_dup8.5.bin"
+ 
+ #define MT7921_EEPROM_SIZE		3584
+ #define MT7921_TOKEN_SIZE		8192

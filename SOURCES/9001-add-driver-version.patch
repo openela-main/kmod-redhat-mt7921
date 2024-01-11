@@ -1,0 +1,27 @@
+Index: src/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+===================================================================
+--- src.orig/drivers/net/wireless/mediatek/mt76/mt7921/pci.c	2022-01-30 05:39:36.484691909 +0100
++++ src/drivers/net/wireless/mediatek/mt76/mt7921/pci.c	2022-01-30 05:42:27.098085136 +0100
+@@ -320,3 +320,4 @@
+ MODULE_AUTHOR("Sean Wang <sean.wang@mediatek.com>");
+ MODULE_AUTHOR("Lorenzo Bianconi <lorenzo@kernel.org>");
+ MODULE_LICENSE("Dual BSD/GPL");
++MODULE_VERSION("4.18.0_363_dup8.5");
+Index: src/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+===================================================================
+--- src.orig/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c	2022-01-30 05:39:36.484691909 +0100
++++ src/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c	2022-01-30 05:42:27.100085118 +0100
+@@ -2050,3 +2050,4 @@
+ 
+ MODULE_AUTHOR("Lorenzo Bianconi <lorenzo@kernel.org>");
+ MODULE_LICENSE("Dual BSD/GPL");
++MODULE_VERSION("4.18.0_363_dup8.5");
+Index: src/drivers/net/wireless/mediatek/mt76/util.c
+===================================================================
+--- src.orig/drivers/net/wireless/mediatek/mt76/util.c	2022-01-30 05:38:51.384116649 +0100
++++ src/drivers/net/wireless/mediatek/mt76/util.c	2022-01-30 05:43:41.935380347 +0100
+@@ -139,3 +139,4 @@
+ EXPORT_SYMBOL_GPL(__mt76_worker_fn);
+ 
+ MODULE_LICENSE("Dual BSD/GPL");
++MODULE_VERSION("4.18.0_363_dup8.5");
